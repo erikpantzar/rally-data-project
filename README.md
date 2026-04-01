@@ -22,6 +22,14 @@ python -m venv .venv
 The API is available at `http://localhost:8000`.
 Interactive docs: `http://localhost:8000/docs`
 
+## Live API
+
+**`https://rally-api-441264299241.europe-west1.run.app`**
+
+```bash
+curl https://rally-api-441264299241.europe-west1.run.app/rally/1234
+```
+
 ## Endpoints
 
 ### `GET /rally/{rally_id}`
@@ -49,6 +57,33 @@ curl http://localhost:8000/rally/1234
 | `total_distance_km` | Total rally distance |
 | `car_groups` | Allowed car groups |
 | `legs` | List of legs, each with stages and service parks |
+
+## Deployment
+
+### Google Cloud Run
+
+Ensure `gcloud` CLI is installed and authenticated:
+
+```bash
+gcloud auth login
+gcloud config set project rally-data-project
+```
+
+Enable required APIs (first time only):
+
+```bash
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+```
+
+Deploy:
+
+```bash
+gcloud run deploy rally-api --source . --region europe-west1 --allow-unauthenticated
+```
+
+Cloud Build containerizes the app automatically using the `Dockerfile` — no local Docker required. The service URL is printed at the end of the deploy.
+
+---
 
 ## Project Structure
 
